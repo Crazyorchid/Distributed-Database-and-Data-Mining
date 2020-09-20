@@ -8,22 +8,21 @@ using namespace std;
 
 class toAA{
     public:
-    int queryS[30][30];
+    int queryS[50][50];
     int wqueryS = 0; //width of the query;
     int hqueryS = 0; // height of the query;
 
     string bufftmp[2];
-    int queryA[30][30];
+    int queryA[50][50];
     int wqueryA = 0;
     int hqueryA = 0;
 
-    int aa[30][30];
-
+    int aa[50][50];
 
 void readattAndQuery ()
 {
 
-    ifstream aa("att.txt");
+    ifstream aa("att_2.txt");
     string first_line;
     vector<string> read;
     try{
@@ -37,7 +36,7 @@ void readattAndQuery ()
     }
     // cout the number stored in the txt to vector
 
-    ifstream qu("query.txt");
+    ifstream qu("query_2.txt");
     string second_line;
     vector<string> read2;
     try{
@@ -72,7 +71,7 @@ void readattAndQuery ()
 
         }
         }
-    //cout << queryA[3][2]<<endl;
+    //cout << queryA[10][10]<<endl;
 
     }
     bool findATT(string a, string b) {
@@ -98,7 +97,7 @@ void readattAndQuery ()
     }
 
 void readacc(){
-    ifstream in("acc.txt");
+    ifstream in("acc_2.txt");
     string line;
     vector<string> t;
     try{
