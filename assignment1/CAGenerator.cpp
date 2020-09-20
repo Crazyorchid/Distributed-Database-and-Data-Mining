@@ -8,11 +8,11 @@ using namespace std;
 
 class AAtoCA{
 public:
-    int aa[30][30]{};
-    int ca[30][30]{};
-    int insertcolumn[30]{};
-    int sequence[30]{};
-    int length{};
+    int aa[30][30];
+    int ca[30][30];
+    int insertcolumn[30];
+    int sequence[30];
+    int length;
     int cont = 0;
     int bond = 0;
     ofstream outf;
@@ -115,7 +115,7 @@ public:
         }
     }
     void printsequence(){
-        outf.open("ca.txt");
+        outf.open("ca_2.txt");
         cout<<" ";
         for (int i = 0; i < length; i++) {
             cout << "A" <<sequence[i] +1<<" ";
