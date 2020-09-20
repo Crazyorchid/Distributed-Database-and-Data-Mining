@@ -23,8 +23,7 @@ class toAA{
 void readattAndQuery ()
 {
 
-    //read the aa test file and put into a vector;
-    ifstream aa("aa_1.txt");
+    ifstream aa("att_1.txt");
     string first_line;
     vector<string> read;
     try{
@@ -73,6 +72,7 @@ void readattAndQuery ()
 
         }
         }
+    //cout << queryA[3][2]<<endl;
 
     }
     bool findATT(string a, string b) {
@@ -97,10 +97,8 @@ void readattAndQuery ()
         return is;
     }
 
-
-
 void readacc(){
-    ifstream  in ("acc_1.txt");
+    ifstream in("acc_1.txt");
     string line;
     vector<string> t;
     try{
@@ -113,24 +111,25 @@ void readacc(){
         cout << msg << endl;
     }
     hqueryS = t.size() - 1;
-
+//write the data from the file
     for(int i=1; i < t.size();i++){
         string temp = t[i];
         string buf;
         stringstream ss(temp);
         int num = 0;
         while(ss >> buf){
-            if(num>0){
+            if (num>0){
                 stringstream convert(buf);
                 convert>> queryS[i-1][num-1];
-            }
-            num++;
+            }num++;
+
             if(num-1>wqueryS){
                 wqueryS=num-1;
             }
         }
 
     }
+//cout << queryS[3][0] << endl;
 }
 
 void makeAA(){
@@ -152,15 +151,15 @@ void doaff(int i, int j){
     float a = 0;
     float b0 = 0;
     float b1 = 0;
-    for(int k=0; k<hqueryA;k++){
+    for(int k=0; k < hqueryA;k++){
         float Aik;
         float Ajk;
         float QkSj = 0;
         for (int s = 0; s < wqueryS; s++) {
             QkSj+=(float)queryS[k][s];
         }
-        Ajk = (float)queryA[k][i]*QkSj;
-        Ajk = (float)queryA[k][j]*QkSj;
+        Aik = ((float)queryA[k][i])*QkSj;
+        Ajk = ((float)queryA[k][j])*QkSj;
 
         a+=Aik*Ajk;
         b0 += Aik;
@@ -178,6 +177,7 @@ void doaff(int i, int j){
         }
         aa[i][j]=resultInt;
     }
+   // cout<<aa[2][1]<<endl;
 }
 void printaa(){
     for (int i = 0; i < wqueryA; i++) {
@@ -205,12 +205,13 @@ void printqa(){
 
 int main()
 {
+
     toAA myobj;
     myobj.readattAndQuery();
     myobj.readacc();
-
     myobj.makeAA();
     myobj.printaa();
+    //myobj.printqa();
 
     return 0;
 
