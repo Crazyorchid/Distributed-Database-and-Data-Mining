@@ -8,11 +8,11 @@ using namespace std;
 
 class AAtoCA{
 public:
-    int aa[30][30];
-    int ca[30][30];
-    int insertcolumn[30];
-    int sequence[30];
-    int length;
+    int aa[30][30]{};
+    int ca[30][30]{};
+    int insertcolumn[30]{};
+    int sequence[30]{};
+    int length{};
     int cont = 0;
     int bond = 0;
     ofstream outf;
@@ -94,7 +94,7 @@ public:
     }
     void dobond(int a, bool b){
         bond=0;
-        if(b==true){
+        if(b== true){
             for (int i = 0; i < length; i++) {
                 bond+=ca[i][a]*insertcolumn[i];
             }
@@ -145,6 +145,7 @@ public:
         outf.close();
     }
 };
+
 int main(int argc, char* argv[])
 {
     ifstream in(argv[1]);
@@ -163,9 +164,9 @@ int main(int argc, char* argv[])
     AAtoCA myobj;
     myobj.readaa(aa);
     myobj.toca();
-
     myobj.printsequence();
     myobj.turnover();
+    //myobj.printsequence();
     myobj.toca();
     myobj.printca();
 
