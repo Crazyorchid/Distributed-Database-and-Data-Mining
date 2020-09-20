@@ -17,7 +17,7 @@ class toAA{
     int wqueryA = 0;
     int hqueryA = 0;
 
-    int aa[50][50];
+    int aa[100][100];
 
 
 void readattAndQuery ()
