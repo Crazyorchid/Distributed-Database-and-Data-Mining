@@ -115,7 +115,7 @@ public:
         }
     }
     void printsequence(){
-        outf.open("ca_1.txt");
+        outf.open("ca.txt");
         cout<<" ";
         for (int i = 0; i < length; i++) {
             cout << "A" <<sequence[i] +1<<" ";
