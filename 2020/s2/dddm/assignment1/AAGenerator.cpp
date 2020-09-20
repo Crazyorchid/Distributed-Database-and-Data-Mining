@@ -8,16 +8,16 @@ using namespace std;
 
 class toAA{
     public:
-    int queryS[50][50];
+    int queryS[30][30];
     int wqueryS = 0; //width of the query;
     int hqueryS = 0; // height of the query;
 
     string bufftmp[2];
-    int queryA[50][50];
+    int queryA[30][30];
     int wqueryA = 0;
     int hqueryA = 0;
 
-    int aa[100][100];
+    int aa[30][30];
 
 
 void readattAndQuery ()
