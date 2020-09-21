@@ -13,16 +13,16 @@ using namespace std;
 
 class toAA{
     public:
-    int queryS[50][50];
+    int queryS[30][30];
     int wqueryS = 0; //width of the query;
     int hqueryS = 0; // height of the query;
 
-    string bufftmp[3];
-    int queryA[50][50];
+    string bufftmp[2];
+    int queryA[30][30];
     int wqueryA = 0;
     int hqueryA = 0;
 
-    int aa[50][50];
+    int aa[30][30];
 
 void readattAndQuery ()
 {
@@ -56,7 +56,7 @@ void readattAndQuery ()
     hqueryA = read2.size();
     wqueryA = read2.size()-1;
 
-    //the matrix of aa nad query and put into query2[][];
+    //the matrix of aa and query and put into query2[][];
 
     for (int i = 0; i < read2.size(); i++) {
         for (int j = 0; j < read.size(); j++) {
@@ -129,7 +129,7 @@ void readacc(){
 
             if(num-1>wqueryS){
                 wqueryS=num-1;
-            }
+            }num++;
         }
 
     }
