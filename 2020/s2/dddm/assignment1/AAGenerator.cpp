@@ -27,7 +27,7 @@ class toAA{
 void readattAndQuery ()
 {
 
-    ifstream aa("att.txt");
+    std::ifstream aa("att_2.txt",std::ios_base::binary);
     string first_line;
     vector<string> read;
     try{
@@ -42,7 +42,7 @@ void readattAndQuery ()
     // cout the number stored in the txt to vector
 
 
-    ifstream qu("query.txt");
+    ifstream qu("query_2.txt",std::ios_base::binary);
     string second_line;
     vector<string> read2;
     try{
@@ -102,39 +102,40 @@ void readattAndQuery ()
         return is;
     }
 
-void readacc() {
-    ifstream in("acc.txt");
+void readacc(){
+    ifstream in("acc_2.txt",std::ios_base::binary);
     string line;
     vector<string> t;
-    try {
-        if (in) {
-            while (getline(in, line)) {
+    try{
+        if(in){
+            while(getline(in, line)){
                 t.push_back(line);
             }
         }
-    } catch (const char *msg) {
+    } catch (const char* msg) {
         cout << msg << endl;
     }
     hqueryS = t.size() - 1;
 //write the data from the file
-    for (int i = 1; i < t.size(); i++) {
+    for(int i=1; i < t.size();i++){
         string temp = t[i];
         string buf;
         stringstream ss(temp);
         int num = 0;
-        while (ss >> buf) {
-            if (num > 0) {
+        while(ss >> buf){
+            if (num>0){
                 stringstream convert(buf);
-                convert >> queryS[i - 1][num - 1];
-            }
-            num++;
+                convert>> queryS[i-1][num-1];
+            }num++;
 
-            if (num - 1 > wqueryS) {
-                wqueryS = num - 1;
+            if(num-1>wqueryS){
+                wqueryS=num-1;
             }
         }
 
     }
+
+
 }
 
 void makeAA(){
@@ -145,10 +146,13 @@ void makeAA(){
             }else{
                 aa[i][j]=aa[j][i];
             }
+
+
         }
+
     }
+     cout << aa[11][11] << endl;
 }
-     //cout << aa[11][11] << endl;
 
 void doaff(int i, int j){
 
