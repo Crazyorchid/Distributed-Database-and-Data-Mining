@@ -125,7 +125,7 @@ void readacc(){
         while(ss >> buf){
             if (num>0){
                 stringstream convert(buf);
-                convert>> queryS[i-1][num-1];
+                convert>> queryS[i][num];
             }num++;
 
             if(num-1>wqueryS){
@@ -151,7 +151,7 @@ void makeAA(){
         }
 
     }
-     cout << aa[11][11] << endl;
+     //cout << aa[11][11] << endl;
 }
 
 void doaff(int i, int j){
