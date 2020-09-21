@@ -83,7 +83,7 @@ void readattAndQuery ()
         int alength = a.length();
         int blength = b.length();
         bool is = false;
-        for (int i = 20; i < alength; i++) {
+        for (int i = 8; i < alength; i++) {
             if (a[i] == b[0] && alength - i >= blength) {
                 if (a.substr(i, blength) == b) {
                     if (a[i - 1] - '0' < 17 || a[i - 1] - '0' > 42) {
