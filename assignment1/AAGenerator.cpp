@@ -27,7 +27,7 @@ class toAA{
 void readattAndQuery ()
 {
 
-    ifstream aa("atttxt");
+    ifstream aa("att.txt");
     string first_line;
     vector<string> read;
     try{
