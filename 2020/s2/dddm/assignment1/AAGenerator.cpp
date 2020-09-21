@@ -27,7 +27,7 @@ class toAA{
 void readattAndQuery ()
 {
 
-    ifstream aa("att.txt");
+    ifstream aa("att_2.txt");
     string first_line;
     vector<string> read;
     try{
@@ -41,7 +41,8 @@ void readattAndQuery ()
     }
     // cout the number stored in the txt to vector
 
-    ifstream qu("query.txt");
+
+    ifstream qu("query_2.txt");
     string second_line;
     vector<string> read2;
     try{
@@ -75,7 +76,7 @@ void readattAndQuery ()
             }
 
         }
-        }
+    }
     //cout << queryA[10][10]<<endl;
 
     }
@@ -101,39 +102,45 @@ void readattAndQuery ()
         return is;
     }
 
-void readacc(){
-    ifstream in("acc.txt");
+void readacc() {
+    ifstream in("acc_2.txt");
     string line;
     vector<string> t;
-    try{
-        if(in){
-            while(getline(in, line)){
+    try {
+        if (in) {
+            while (getline(in, line)) {
                 t.push_back(line);
             }
         }
-    } catch (const char* msg) {
+    } catch (const char *msg) {
         cout << msg << endl;
     }
     hqueryS = t.size() - 1;
 //write the data from the file
-    for(int i=1; i < t.size();i++){
+    for (int i = 1; i < t.size(); i++) {
         string temp = t[i];
         string buf;
         stringstream ss(temp);
         int num = 0;
-        while(ss >> buf){
-            if (num>0){
+        while (ss >> buf) {
+            if (num > 0) {
                 stringstream convert(buf);
-                convert>> queryS[i-1][num-1];
-            }num++;
+                convert >> queryS[i - 1][num - 1];
+            }
+            num++;
 
-            if(num-1>wqueryS){
-                wqueryS=num-1;
-            }num++;
+            if (num - 1 > wqueryS) {
+                wqueryS = num - 1;
+            }
         }
 
     }
-//cout << queryS[9][11] << endl;
+    for (int i = 0; i < wqueryA; i++) {
+        for (int j = 0; j < wqueryA; j++) {
+            cout << queryS[i][j] << "\t";
+
+        }
+    }
 }
 
 void makeAA(){
@@ -144,11 +151,10 @@ void makeAA(){
             }else{
                 aa[i][j]=aa[j][i];
             }
-
         }
-
-    }//cout << aa[11][11] << endl;
+    }
 }
+     //cout << aa[11][11] << endl;
 
 void doaff(int i, int j){
 
@@ -213,6 +219,7 @@ int main()
     toAA myobj;
     myobj.readattAndQuery();
     myobj.readacc();
+    //myobj.doaff(0,18);
     myobj.makeAA();
     myobj.printaa();
     //myobj.printqa();
