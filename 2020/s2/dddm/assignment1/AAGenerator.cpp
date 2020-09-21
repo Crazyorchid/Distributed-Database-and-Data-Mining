@@ -135,12 +135,6 @@ void readacc() {
         }
 
     }
-    for (int i = 0; i < wqueryA; i++) {
-        for (int j = 0; j < wqueryA; j++) {
-            cout << queryS[i][j] << "\t";
-
-        }
-    }
 }
 
 void makeAA(){
