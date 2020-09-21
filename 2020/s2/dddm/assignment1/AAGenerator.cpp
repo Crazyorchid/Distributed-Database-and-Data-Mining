@@ -2,7 +2,12 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include <tgmath.h>
+#include <cmath>
+#include <cstdio>
+#include <string>
+#include <iomanip>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -12,7 +17,7 @@ class toAA{
     int wqueryS = 0; //width of the query;
     int hqueryS = 0; // height of the query;
 
-    string bufftmp[2];
+    string bufftmp[3];
     int queryA[50][50];
     int wqueryA = 0;
     int hqueryA = 0;
@@ -78,7 +83,7 @@ void readattAndQuery ()
         int alength = a.length();
         int blength = b.length();
         bool is = false;
-        for (int i = 8; i < alength; i++) {
+        for (int i = 20; i < alength; i++) {
             if (a[i] == b[0] && alength - i >= blength) {
                 if (a.substr(i, blength) == b) {
                     if (a[i - 1] - '0' < 17 || a[i - 1] - '0' > 42) {
@@ -128,7 +133,7 @@ void readacc(){
         }
 
     }
-//cout << queryS[3][0] << endl;
+//cout << queryS[9][11] << endl;
 }
 
 void makeAA(){
@@ -142,7 +147,7 @@ void makeAA(){
 
         }
 
-    }
+    }//cout << aa[11][11] << endl;
 }
 
 void doaff(int i, int j){
