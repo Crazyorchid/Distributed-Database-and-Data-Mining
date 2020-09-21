@@ -27,7 +27,7 @@ class toAA{
 void readattAndQuery ()
 {
 
-    ifstream aa("att_2.txt");
+    ifstream aa("atttxt");
     string first_line;
     vector<string> read;
     try{
@@ -42,7 +42,7 @@ void readattAndQuery ()
     // cout the number stored in the txt to vector
 
 
-    ifstream qu("query_2.txt");
+    ifstream qu("query.txt");
     string second_line;
     vector<string> read2;
     try{
@@ -103,7 +103,7 @@ void readattAndQuery ()
     }
 
 void readacc() {
-    ifstream in("acc_2.txt");
+    ifstream in("acc.txt");
     string line;
     vector<string> t;
     try {
