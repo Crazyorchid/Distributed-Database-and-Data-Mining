@@ -1,3 +1,28 @@
+#include <vector>
+#include <list>
+#include <map>
+#include <set>
+#include <queue>
+#include <deque>
+#include <stack>
+#include <bitset>
+#include <algorithm>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+#include <stdio.h>
+#include <fstream>
+
+using namespace std;
+
 class toFlow{
 public:
 	string network_packets[1000][7];
@@ -21,52 +46,80 @@ public:
 		string buf;
 		stringstream ss(temp);
 		for (int j=0;j<7;j++){
-			if(ss >> buf){
+			if(ss >> buf)
 				network_packets[i-1][j] = buf;
-				}
+
 			}
 		}
 	}
 
-	vodi generate_flow_output(){
-		int count = 0;
+	void generate_flow_output() {
+        int count = 0;
+        for (int i = 0; i < lines_network - 1; i++) {
 
-		for (int i = 0; i < lines_network-1; i++)
+
+            if (mark[i] == false) {
+                count = 0;
+
+
+                for (int i0 = i+1; i0 < lines_network - 1; i0++) {
+                    if (network_packets[i0][0] == currentflow[0][0] &&
+                        network_packets[i0][1] == currentflow[0][1] &&
+                        network_packets[i0][2] == currentflow[0][2] &&
+                        network_packets[i0][3] == currentflow[0][3] &&
+                        network_packets[i0][4] == currentflow[0][4]) {
+                        mark[i0] = true;
+                        count++;
+
+                        for (int j0 = 0; j0 < 7; j0++) {
+                            currentflow[count][j0] = network_packets[i0][j0];
+                        }
+                    }
+                }
+
+
+                if (count > 0) {
+
+                    flow_output[num_flow][0] = (float) num_flow;
+
+                    flow_output[num_flow][1] =
+                            ((float) std::stoi(currentflow[count][5]) - (float) std::stoi(currentflow[0][5])) /
+                            (float) count;
+
+                    int sum = 0;
+                    for (int i0 = 0; i0 <= count; i0++)
+                        sum += std::stoi(currentflow[i0][6]);
+                    flow_output[num_flow][2] = (float) sum / (float) (count + 1);
+
+                    num_flow++;
+                }
+            }
+        }
+    }
+
+
+
+void print_flow_output(){
+	outf.open("Flow.txt");
+	for (int i = 0; i < num_flow; i++)
+	{
+		for (int j = 0; j < 3; j++)
 		{
-			if(network_packets[i0][0]==currentflow[0][0]&&
-				network_packets[i0][1]==currentflow[0][1]&&
-				network_packets[i0][2]==currentflow[0][2]&&
-				network_packets[i0][3]==currentflow[0][3]&&
-				network_packets[i0][4]==currentflow[0][4]&&){
-				mark[i0] = true;
-			count++
-
-			for (int j0 = 0; j0 < <7; j0++)
-			{
-				currentflow[count][j0] = network_packets[i0][j0];
-				}
+			if(j==0){
+				outf<<i;
+			}else{
+				outf<<fixed << setprecision(2) << flow_output[i][j];
+			}
+			if(j==2){
+				outf<<endl;
+			}else{
+				outf<<" ";
 			}
 		}
-
-		if(count>0){
-
-			flow_output[num_flow][0] = (float)num_flow;
-
-			flow_output[num_flow][1] = ((float)std::stoi(currentflow[count][5])-(float)std::stoi(currentflow[0][5]))/(float)count;
-
-			int sum = 0;
-			for (int i0 = 0; i0 <= count; i0++)
-				sum += std::stoi(currentflow[i0][6]);
-			flow_output[num_flow][2] = (float)sum/(float)(count+1);
-
-			num_flow++;
-		}
 	}
-
-
-
+	outf.close();
 }
-
+};
 
 
 class toCluster{
@@ -77,8 +130,8 @@ public:
 	float flow[100][2];
 	int numOflows;
 
-	bool cluseter[100][100];
-	bool cluseter_temp[100][100];
+	bool cluster[100][100];
+	bool cluster_temp[100][100];
 	int medoids[100];
 	int medoids_temp[100];
 	int k;
@@ -86,7 +139,7 @@ public:
 	float error_temp;
 	ofstream outf;
 
-	void inializtion(vect<string> t){
+	void inializtion(vector<string> t){
 		int k = std::stoi(t[0]);
 
 		string temp = t[1];
@@ -104,11 +157,8 @@ public:
 
 	}
 
-	void out_put_result(){
-		bool execute = true;
-		while(execute){
-			execute = can_exchange();
-		}
+	void output_result(){
+		while(can_exchange())
 		outf.open("KMedoidsClusters.txt");
 		outf<<fixed << setprecision(2) << error <<endl;
 
@@ -122,8 +172,8 @@ public:
 
 		for(int i=0;i<k;i++){
 			for(int j=0;j<numOflows;j++){
-				if(cluster[i][j]==true){
-					outf<<j<<" ";
+				if(cluster[i][j]){
+					outf<< j <<" ";
 
 				}
 			}
@@ -152,14 +202,14 @@ public:
 				}
 			}
 		}
-		return false
+		return false;
 	}
 
 	void allocate_flows(){
 		for(int i=0;i<k;i++){
 			for (int j = 0; i < numOflows; j++)
 			
-				cluseter_temp[i][j]=false;
+				cluster_temp[i][j]=false;
 			}
 			for (int i = 0; i < numOflows; i++)
 			{
@@ -167,14 +217,13 @@ public:
 					cluster_temp[find_closest_medoid(i)][i]=true;
 				}
 			}
-
 		}
 
 		void calculate_error(){
 			float sum = 0;
 			for (int i = 0; i < k; i++)
 			{
-				for (int i = 0; i < numOflows; j++)
+				for (int j = 0; j < numOflows; j++)
 				{
 					if(cluster_temp[i][j]==true){
 						sum+=distance(medoids_temp[i],j);
@@ -214,7 +263,7 @@ public:
 			{
 				for (int j = 0; j < numOflows; j++)
 				{
-					cluster[i][j] = cluster_temp[i][j]
+					cluster[i][j] = cluster_temp[i][j];
 				}
 			}
 		}
@@ -238,15 +287,45 @@ public:
 
 int main(int argc, char* argv[])
 {
+	ifstream in(argv[1]);
+	string line;
+	vector<string> t;
+
+	try{
+		if(in){
+			while (getline (in, line)){
+				t.push_back(line);
+			}
+		}
+	}catch(const char* msg){
+		cout << msg << endl;
+	}
+
 	toFlow test;
-	read_network_packets(t);
-	generate_flow_output();
-	print_flow_output();
+	test.read_network_packets(t);
+	test.generate_flow_output();
+	test.print_flow_output();
+
+
+	ifstream in_arg2(argv[2]);
+	//string line;
+	vector<string> t_arg2;
+
+	try{
+		if(in_arg2){
+			while (getline (in_arg2, line)){
+				t_arg2.push_back(line);
+			}
+		}
+	}catch(const char* msg){
+		cout << msg << endl;
+	}
+
 
 
 	toCluster object;
 
-	object.numOflows = test.numOflows;
+	object.numOflows = test.num_flow;
 
 	for (int i = 0; i < object.numOflows; i++)
 	{
