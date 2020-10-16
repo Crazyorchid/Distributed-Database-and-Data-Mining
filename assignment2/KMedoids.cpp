@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <math.h>
+#include <stdio.h>
 #include <iomanip>
 #include <cmath>
 using namespace std;
@@ -214,8 +215,8 @@ double calculateError(vector<cluster>& clusters, vector<vector<double>>& map)
 }
 
 int main(int argc, const char * argv[]) {
-    string network_packets="/Users/liuqinghao/Desktop/assignment2_sample1/network_packets.txt";
-    string init_add="/Users/liuqinghao/Desktop/assignment2_sample1/initial_medoids.txt";
+    string network_packets="file1.txt";
+    string init_add="file2.txt";
 //    string network_packets=argv[1];
 //    string init_add=argv[2];
     
