@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  DDDMAsg2
-//
-//  Created by Liu Qinghao on 2019/5/18.
-//  Copyright © 2019 Liu Qinghao. All rights reserved.
-//
-
 #include <iostream>
 #include <fstream>
 #include <string.h>
