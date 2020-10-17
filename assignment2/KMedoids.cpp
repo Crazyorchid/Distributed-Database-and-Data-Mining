@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 #include <fstream>
 #include <string.h>
@@ -11,9 +13,9 @@ using namespace std;
 
 class packet{
 public:
-    string flow_key;
-    int arrival_time;
-    int packet_length;
+    string flowKey;
+    int arrivalTime;
+    int packetLength;
 };
 
 class cluster{
@@ -28,50 +30,25 @@ public:
     {
         nesrestPoints.clear();
     }
-    void printPoints()
-    {
-    
-        for (int i=0; i<nesrestPoints.size(); i++) {
-            cout<<nesrestPoints[i]<<" ";
-        }
-        cout<<endl;
-    }
-    bool isBelong (int pointIdx)
-    {
-       
-        for (int i=0; i<nesrestPoints.size(); i++) {
-            if(pointIdx==nesrestPoints[i])
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+
 };
 
+//Calculate the distance with manhatan distance
 double Distance(vector<vector<double>> flowResult, int point1, int point2)
 {
-    return abs(flowResult[point1][0]-flowResult[point2][0])+abs(flowResult[point1][1]-flowResult[point2][1]);
+    double r1 = abs(flowResult[point1][0]-flowResult[point2][0]);
+    double r2 = abs(flowResult[point1][1]-flowResult[point2][1]);
+    return r1 + r2;
+    //return abs(flowResult[point1][0]-flowResult[point2][0])+abs(flowResult[point1][1]-flowResult[point2][1]);
 }
 
-//int findNearestModoid(int pointIdx,vector<vector<double>> flowResult, vector<int> modoidIdx)
-//{
-//    int minIdx;
-//    double min_dis=9999999.0;
-//    double dis;
-//    for(int k=0;k<modoidIdx.size();k++)
-//    {
-//        dis=Distance(flowResult, pointIdx, modoidIdx[k]);
-//        if (dis<min_dis)
-//        {
-//            min_dis=dis;
-//            minIdx=modoidIdx[k];
-//        }
-//    }
-//    return minIdx;
-//}
+/*float distance (int b, int a){
+    float r1 = abs(flow[b][0]-flow[a][0]);
+    float r2 = abs(flow[b][1]-flow[a][1]);
+    return r1+r2;*/
 
-int findNearestModoidMap(int pointIdx,vector<vector<double>> map, vector<int> modoidIdx)
+//Find the nearest points
+int DetermineNearest(int pointIdx, vector<vector<double>> map, vector<int> modoidIdx)
 {
     int minIdx;
     double min_dis=9999999.0;
@@ -87,7 +64,7 @@ int findNearestModoidMap(int pointIdx,vector<vector<double>> map, vector<int> mo
     }
     return minIdx;
 }
-
+//determine wether it is a medoid or not
 bool isMedoid(vector<int> medoid_idx, int key)
 {
     for (int i=0; i<medoid_idx.size(); i++) {
@@ -98,7 +75,7 @@ bool isMedoid(vector<int> medoid_idx, int key)
     }
     return false;
 }
-
+//build the mao by adding the results
 vector<vector<double>>  buildMap(vector<vector<double>> flowResult)
 {
     vector<vector<double>> map;
@@ -114,14 +91,16 @@ vector<vector<double>>  buildMap(vector<vector<double>> flowResult)
 
 void assignPoints(vector<vector<double>>& flowResult, vector<int>& modoidIdx, vector<cluster>& clusters)
 {
-    for (int l=0; l<clusters.size(); l++) {
+    int l = 0;
+    while (l<clusters.size()) {
         clusters[l].clearPoints();
         clusters[l].modiodIdx=modoidIdx[l];
+        l++;
     }
-    
+
     for (int i=0; i<flowResult.size(); i++) {
         int minIdx;
-        minIdx=findNearestModoidMap(i, flowResult, modoidIdx);
+        minIdx= DetermineNearest(i, flowResult, modoidIdx);
         if (minIdx!=-1)
         {
             for(int h=0;h<clusters.size();h++)
@@ -135,19 +114,19 @@ void assignPoints(vector<vector<double>>& flowResult, vector<int>& modoidIdx, ve
         }
     }
 }
-
+//adding the flow with push_bakc to the result
 vector<int> findFlow(string key,vector<packet> packets)
 {
     vector<int> resultIdx;
     for (int i=0; i<packets.size(); i++) {
-        if(packets[i].flow_key==key)
+        if(packets[i].flowKey == key)
         {
             resultIdx.push_back(i);
         }
     }
     return resultIdx;
 }
-
+//remove the flow fron the vector
 void removeFlow(vector<int> resultIdx, vector<packet>& packets)
 {
     vector <packet>::iterator Iter;
@@ -159,10 +138,10 @@ void removeFlow(vector<int> resultIdx, vector<packet>& packets)
     }
 }
 
-
+//Calculate the total cost(Manhaton Distance)
 double calculateTC(int previousModoidIdx, int potientalModoidIdx, vector<cluster>& clusters,  vector<vector<double>>& map, vector<int>& newModiodIdx,vector<int>& oldModiodIdx)
 {
-    //i previous medoid; h potiental replacement
+
     double TCih=0;
     for (int j=0; j<map.size(); j++) {
         bool belongPrevious =false;
@@ -170,17 +149,18 @@ double calculateTC(int previousModoidIdx, int potientalModoidIdx, vector<cluster
         int newClusterIdx;
         int previousCluster;
         double cost=0;
-        previousCluster=findNearestModoidMap(j, map, oldModiodIdx);
+        previousCluster= DetermineNearest(j, map, oldModiodIdx);
         if(previousCluster==previousModoidIdx)
         {
             belongPrevious = true;
         }
-        newClusterIdx=findNearestModoidMap(j, map, newModiodIdx);
+        newClusterIdx= DetermineNearest(j, map, newModiodIdx);
         if(newClusterIdx==potientalModoidIdx)
         {
             belongPotential=true;
         }
-       
+
+
         if (belongPrevious==true&&belongPotential==true)
         {
             cost=map[j][potientalModoidIdx]-map[j][previousModoidIdx];
@@ -202,6 +182,7 @@ double calculateTC(int previousModoidIdx, int potientalModoidIdx, vector<cluster
     return TCih;
 }
 
+//calculate the error
 double calculateError(vector<cluster>& clusters, vector<vector<double>>& map)
 {
     double error=0;
@@ -217,10 +198,9 @@ double calculateError(vector<cluster>& clusters, vector<vector<double>>& map)
 int main(int argc, const char * argv[]) {
     string network_packets="file1.txt";
     string init_add="file2.txt";
-//    string network_packets=argv[1];
-//    string init_add=argv[2];
-    
-    
+
+
+
     vector<packet> packets;
     vector<vector<double>> flow_result;
     vector<int> flow_idx;
@@ -228,6 +208,7 @@ int main(int argc, const char * argv[]) {
     vector<int> medoid_idx;
     ifstream infile;
     string data;
+    //Read the first file and do the calculation
     infile.open(argv[1],ios::in);
     getline(infile,data);
     while (getline(infile, data)) {
@@ -238,16 +219,16 @@ int main(int argc, const char * argv[]) {
             vec.push_back(tmp);
         }
         packet pac;
-        pac.flow_key=vec[0]+vec[1]+vec[2]+vec[3]+vec[4];
-        pac.arrival_time=std::stoi(vec[5]);
-        pac.packet_length=std::stoi(vec[6]);
+        pac.flowKey= vec[0] + vec[1] + vec[2] + vec[3] + vec[4];
+        pac.arrivalTime=std::stoi(vec[5]);
+        pac.packetLength=std::stoi(vec[6]);
         packets.push_back(pac);
     }
     infile.close();
-    
+
     while (packets.size()!=0) {
-        
-        flow_idx=findFlow(packets[0].flow_key,packets);
+
+        flow_idx=findFlow(packets[0].flowKey, packets);
         if (flow_idx.size()<=1) {
             removeFlow(flow_idx, packets);
         }
@@ -257,22 +238,25 @@ int main(int argc, const char * argv[]) {
             double length=0;
             vector<double> result;
             for (int j=flow_idx.size()-1; j>0; j--) {
-                length=length+packets[flow_idx[j]].packet_length;
-                time=time+packets[flow_idx[j]].arrival_time-packets[flow_idx[j-1]].arrival_time;
+                length=length+packets[flow_idx[j]].packetLength;
+                time= time + packets[flow_idx[j]].arrivalTime - packets[flow_idx[j - 1]].arrivalTime;
             }
-            length=length+packets[0].packet_length;
+            length=length+packets[0].packetLength;
             time=time/(flow_idx.size()-1);
             length=length/flow_idx.size();
             result.push_back(time);
             result.push_back(length);
             flow_result.push_back(result);
             removeFlow(flow_idx, packets);
-            
+
         }
     }
+    //output the result to "Flow.txt"
     ofstream fout;
     fout.open ("Flow.txt", ios::out | ios::trunc);
     fout.flags(ios::fixed);
+
+
     for(int k=0;k<flow_result.size();k++)
     {
         fout<<k<<" ";
@@ -280,11 +264,11 @@ int main(int argc, const char * argv[]) {
         fout<<" ";
         fout<<setprecision(2)<<flow_result[k][1]<<endl;
     }
-    
+
     fout.close();
-    
+
     ifstream infile1;
-    
+//open the second file
     infile1.open(argv[2],ios::in);
     getline(infile1,data);
     medoid_num=stoi(data);
@@ -303,12 +287,12 @@ int main(int argc, const char * argv[]) {
         cluster clust;
         clusters.push_back(clust);
     }
-    
+
     vector<vector<double>> map=buildMap(flow_result);
-//    cout<<"done"<<endl;
+
     bool change=true;
     double error;
-//    assignPoints(flow_result, medoid_idx, clusters);
+
     while(change)
     {
         assignPoints(map, medoid_idx, clusters);
@@ -317,8 +301,7 @@ int main(int argc, const char * argv[]) {
             if (isMedoid(medoid_idx, m)==false) {
                 bool isExchange=false;
                 for (int g=0; g<medoid_num; g++) {
-//                 for (int g=medoid_num; g>0; g--) {
-                    //calculate Total
+
                     vector<int> newModiodIdx(medoid_idx);
                     newModiodIdx[g]=m;
                     double TC;
@@ -328,7 +311,7 @@ int main(int argc, const char * argv[]) {
                         isExchange=true;
                         medoid_idx=newModiodIdx;
                         isChange=true;
-//                        assignPoints(flow_result, medoid_idx, clusters);
+
                         break;
                     }
                 }
@@ -337,7 +320,7 @@ int main(int argc, const char * argv[]) {
                     break;
                 }
             }
-            
+
         }
         if(isChange==true)
         {
@@ -364,8 +347,8 @@ int main(int argc, const char * argv[]) {
         }
         fout0<<endl;
     }
-    
+
     fout0.close();
-    
+
     return 0;
 }
