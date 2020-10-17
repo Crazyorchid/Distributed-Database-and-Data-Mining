@@ -1,5 +1,12 @@
-
-
+/*
+*   Distributed Databases and Data Mining
+*   2020, Semester 02
+*   Assignment 2
+*
+*   student (id): a1778478
+*   student (name): Runtao Zhuge
+*
+*/
 #include <iostream>
 #include <fstream>
 #include <string.h>
@@ -10,7 +17,7 @@
 #include <iomanip>
 #include <cmath>
 using namespace std;
-
+//Create the cluseter paket for later implementation.
 class packet{
 public:
     string flowKey;
@@ -18,6 +25,7 @@ public:
     int packetLength;
 };
 
+//Create the class cluster for later implementation
 class cluster{
 public:
     int modiodIdx;
@@ -33,7 +41,7 @@ public:
 
 };
 
-//Calculate the distance with manhatan distance
+//Calculate the distance with manhatan distance return the sum of the two results
 double Distance(vector<vector<double>> flowResult, int point1, int point2)
 {
     double r1 = abs(flowResult[point1][0]-flowResult[point2][0]);
@@ -196,10 +204,6 @@ double calculateError(vector<cluster>& clusters, vector<vector<double>>& map)
 }
 
 int main(int argc, const char * argv[]) {
-    string network_packets="file1.txt";
-    string init_add="file2.txt";
-
-
 
     vector<packet> packets;
     vector<vector<double>> flow_result;
@@ -332,23 +336,23 @@ int main(int argc, const char * argv[]) {
         }
     }
     error=calculateError(clusters, map);
-    ofstream fout0;
-    fout0.open ("KMedoidsClusters.txt",ios::out | ios::trunc);
-    fout0.flags(ios::fixed);
-    fout0<<setprecision(2)<<error<<endl;
+    ofstream ccc;
+    ccc.open ("KMedoidsClusters.txt", ios::out | ios::trunc);
+    ccc.flags(ios::fixed);
+    ccc << setprecision(2) << error << endl;
     for(int i=0;i<medoid_idx.size();i++)
     {
-        fout0<<setprecision(2)<<medoid_idx[i]<<" ";
+        ccc << setprecision(2) << medoid_idx[i] << " ";
     }
-    fout0<<endl;
+    ccc << endl;
     for (int i=0; i<clusters.size(); i++) {
         for (int j=0; j<clusters[i].nesrestPoints.size(); j++) {
-            fout0<<setprecision(2)<<clusters[i].nesrestPoints[j]<<" ";
+            ccc << setprecision(2) << clusters[i].nesrestPoints[j] << " ";
         }
-        fout0<<endl;
+        ccc << endl;
     }
 
-    fout0.close();
+    ccc.close();
 
     return 0;
 }
