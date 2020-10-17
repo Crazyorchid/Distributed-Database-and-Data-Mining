@@ -228,7 +228,7 @@ int main(int argc, const char * argv[]) {
     vector<int> medoid_idx;
     ifstream infile;
     string data;
-    infile.open(network_packets,ios::in);
+    infile.open(argv[1],ios::in);
     getline(infile,data);
     while (getline(infile, data)) {
         string tmp;
@@ -285,7 +285,7 @@ int main(int argc, const char * argv[]) {
     
     ifstream infile1;
     
-    infile1.open(init_add,ios::in);
+    infile1.open(argv[2],ios::in);
     getline(infile1,data);
     medoid_num=stoi(data);
     while (getline(infile1, data)) {
